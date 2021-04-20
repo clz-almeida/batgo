@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title></title>
+    <style>
+        body{
+            background-color: black;
+        }
+        canvas{
+            margin-top: 20vh;
+            margin-left: 35vw;
+            
+        }
+    </style>
+</head>
+<body>
+	<canvas id="canvas" width="400" height="400"></canvas>
+
+	<script>
+		
+        person = new Image();
+        person.src = ("batman.png");
+        logo = new Image();
+        logo.src = ("batsinal.png");
+
+		window.onload = function(){
+			canvas = document.getElementById("canvas");
+			ctx = canvas.getContext("2d");
+
+            ctx.drawImage(logo,0,0,400,400,0,0,400,400);
+			document.addEventListener("keydown", function(e){
+				//console.log(e.keyCode);
+				switch(e.keyCode){
+					case 37:
+						velX = -1;
+						velY = 0;
+						break;
+					case 38:
+						velY = -1;
+						velX = 0;
+						break;
+					case 39:
+						velX = 1;
+						velY =0;
+						break;
+					case 40:
+						velY = 1;
+						velX = 0
+						break;
+                        
+				}
+                jogo();
+                console.log(positionX,foodX,positionY,foodY)
+			});
+
+		}
+	
+		positionX = 10;
+		positionY = 10;
+		foodX = 15;
+		foodY = 15;
+		velX = 0;
+		velY = 0;
+		grid = 20;
+        
+
+		function jogo(){
+			positionX += velX;
+			positionY += velY;
+	
+			//console.log(positionX);
+			if(positionX < 0){
+				positionX = grid;
+			}
+			if(positionX > grid){
+				positionX = 0; 
+			}
+			if(positionY < 0){
+				positionY = grid;
+			}
+			if(positionY > grid){
+				positionY = 0; 
+			}
+
+			ctx.fillStyle = "gray";
+			ctx.fillRect(0,0, canvas.width, canvas.height);
+            ctx.drawImage(person,0,0,28,44,positionX*grid,(positionY-2)*grid,28,44);
+            
+            ctx.fillStyle = "yellow";
+            ctx.beginPath();
+			ctx.ellipse(foodX* grid, foodY * grid,15,10,0, 0,(Math.PI*2));
+            ctx.fill();
+            ctx.stroke();
+			if((positionX)== foodX &&  positionY == foodY){
+				foodX = Math.floor(Math.random() * grid);
+				foodY = Math.floor(Math.random() * grid);
+
+			}
+
+		}
+
+	</script>
+</body>
+</html>
